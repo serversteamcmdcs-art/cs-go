@@ -1,0 +1,23 @@
+{
+  "name": "csgo-10000000.16",
+  "version": "1.0.0",
+  "description": "Browser-based 3D FPS multiplayer game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "game",
+    "fps",
+    "three.js",
+    "multiplayer",
+    "socket.io"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  }
+}
