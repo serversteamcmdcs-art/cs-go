@@ -1,0 +1,755 @@
+/**
+ * CS:GO 10000000.16 - Стили
+ * CSS3 для UI элементов игры
+ */
+
+/* Сброс стилей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background-color: #000;
+    /* Запрет резинового скролла на iOS */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    /* Запрет выделения текста при тапах */
+    -webkit-user-select: none;
+    user-select: none;
+    /* Убираем callout при долгом тапе */
+    -webkit-touch-callout: none;
+}
+
+/* Контейнер для Three.js canvas */
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* Экран начала игры (меню) */
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#start-screen.hidden {
+    display: none;
+}
+
+.menu-box {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 50px 80px;
+    border-radius: 15px;
+    border: 2px solid #e94560;
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
+}
+
+.menu-box h1 {
+    font-size: 48px;
+    color: #e94560;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #a0a0a0;
+    margin-bottom: 40px;
+}
+
+/* Кнопка старта */
+#start-btn {
+    padding: 15px 60px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
+}
+
+#start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(233, 69, 96, 0.6);
+}
+
+#start-btn:active {
+    transform: translateY(0);
+}
+
+/* Информация об управлении */
+.controls-info {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.controls-info p {
+    color: #888;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.controls-info strong {
+    color: #e94560;
+}
+
+/* Выбор команды */
+.team-select {
+    margin-bottom: 30px;
+}
+
+.team-label {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.team-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.team-btn {
+    padding: 15px 30px;
+    font-size: 24px;
+    font-weight: bold;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.team-btn.ct {
+    background: #1e90ff;
+    color: #fff;
+    border-color: #1e90ff;
+}
+
+.team-btn.ct:hover, .team-btn.ct.selected {
+    background: #00bfff;
+    box-shadow: 0 0 20px rgba(30, 144, 255, 0.6);
+}
+
+.team-btn.t {
+    background: #ff6b35;
+    color: #fff;
+    border-color: #ff6b35;
+}
+
+.team-btn.t:hover, .team-btn.t.selected {
+    background: #ff8c5a;
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+}
+
+#start-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* FPS счетчик */
+#fps-counter {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: #0f0;
+    font-size: 16px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    z-index: 100;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+/* Счетчик игроков */
+#players-count {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    color: #fff;
+    font-size: 16px;
+    font-family: 'Segoe UI', sans-serif;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Прицел */
+#crosshair {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 30px;
+    font-weight: 100;
+    z-index: 100;
+    pointer-events: none;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+    opacity: 0.8;
+}
+
+/* Полоса HP */
+#health-bar {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 250px;
+    height: 25px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 100;
+}
+
+#health-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff3333, #33ff33);
+    transition: width 0.3s ease;
+}
+
+#health-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+/* Скрываем курсор когда игра активна */
+body.locked #crosshair {
+    opacity: 1;
+}
+
+/* ============ HUD ОРУЖИЯ ============ */
+#weapon-hud {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+}
+
+.weapon-slot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.55);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 170px;
+    position: relative;
+}
+
+.weapon-slot:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.weapon-slot.active {
+    background: rgba(233, 69, 96, 0.3);
+    border-color: #e94560;
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
+}
+
+.weapon-icon {
+    font-size: 22px;
+    width: 28px;
+    text-align: center;
+}
+
+.weapon-name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    flex: 1;
+    letter-spacing: 1px;
+}
+
+.weapon-key {
+    color: #e94560;
+    font-size: 13px;
+    font-weight: bold;
+    background: rgba(233, 69, 96, 0.2);
+    border: 1px solid rgba(233, 69, 96, 0.5);
+    border-radius: 4px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============ ЛИДЕРБОРД ============ */
+#leaderboard {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200;
+    pointer-events: none;
+}
+
+#leaderboard.hidden { display: none; }
+
+.leaderboard-inner {
+    background: rgba(10, 10, 20, 0.92);
+    border: 2px solid #e94560;
+    border-radius: 12px;
+    padding: 24px 36px;
+    min-width: 520px;
+    box-shadow: 0 0 40px rgba(233, 69, 96, 0.3);
+}
+
+.leaderboard-inner h2 {
+    color: #e94560;
+    text-align: center;
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+}
+
+.leaderboard-inner table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.leaderboard-inner thead tr {
+    border-bottom: 1px solid rgba(233, 69, 96, 0.4);
+}
+
+.leaderboard-inner th {
+    color: #e94560;
+    padding: 8px 14px;
+    text-align: left;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.leaderboard-inner td {
+    color: #fff;
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.leaderboard-inner tbody tr:first-child td {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.leaderboard-inner tbody tr:nth-child(2) td { color: #c0c0c0; }
+.leaderboard-inner tbody tr:nth-child(3) td { color: #cd7f32; }
+
+.leaderboard-inner tbody tr.me td {
+    background: rgba(233, 69, 96, 0.12);
+}
+
+.rank-num {
+    font-weight: bold;
+    color: #888;
+}
+
+/* ============ ЛЕНТА УБИЙСТВ ============ */
+#kill-feed {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    pointer-events: none;
+}
+
+.kill-entry {
+    background: rgba(0,0,0,0.7);
+    border-left: 3px solid #e94560;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #fff;
+    animation: killFadeIn 0.2s ease;
+    white-space: nowrap;
+}
+
+.kill-entry .killer { color: #4fc3f7; font-weight: bold; }
+.kill-entry .victim  { color: #ef9a9a; font-weight: bold; }
+.kill-entry .icon    { color: #e94560; margin: 0 6px; }
+
+@keyframes killFadeIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ============ МОБИЛЬНОЕ УПРАВЛЕНИЕ ============ */
+#mobile-controls {
+    display: none; /* показывается только на тач-устройствах */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 90;
+    pointer-events: none;
+}
+
+/* Показываем на тач-устройствах */
+@media (pointer: coarse) {
+    #mobile-controls { display: block; }
+    /* На мобильных прячем weapon-hud справа — он мешает */
+    #weapon-hud { display: none; }
+}
+
+/* Зона джойстика — левая половина нижней части */
+#joystick-zone {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    width: 160px;
+    height: 160px;
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#joystick-base {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.25);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#joystick-stick {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(233, 69, 96, 0.7);
+    border: 2px solid rgba(233, 69, 96, 1);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    transition: none;
+    box-shadow: 0 0 12px rgba(233,69,96,0.5);
+}
+
+/* Зона поворота камеры — правая часть экрана */
+#look-zone {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 55%;
+    height: 100%;
+    pointer-events: all;
+}
+
+/* Кнопки действий */
+#action-buttons {
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    pointer-events: all;
+}
+
+.action-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3);
+    font-size: 26px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.shoot-btn {
+    background: rgba(233, 69, 96, 0.7);
+    border-color: #e94560;
+    box-shadow: 0 0 16px rgba(233,69,96,0.4);
+}
+
+.shoot-btn:active { background: rgba(233, 69, 96, 1); transform: scale(0.93); }
+
+.jump-btn {
+    background: rgba(30, 144, 255, 0.6);
+    border-color: #1e90ff;
+    box-shadow: 0 0 16px rgba(30,144,255,0.4);
+}
+
+.jump-btn:active { background: rgba(30, 144, 255, 1); transform: scale(0.93); }
+
+/* Кнопки смены оружия */
+#weapon-switch-btns {
+    position: absolute;
+    bottom: 200px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: all;
+}
+
+.weapon-switch-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.55);
+    border: 2px solid rgba(255,255,255,0.2);
+    font-size: 22px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.weapon-switch-btn:active {
+    background: rgba(233,69,96,0.4);
+    border-color: #e94560;
+}
+
+/* ============ ОПТИМИЗАЦИЯ ПОД ТЕЛЕФОН ============ */
+@media (max-width: 600px) {
+    /* Меню */
+    .menu-box {
+        padding: 28px 20px;
+        margin: 10px;
+        border-radius: 12px;
+    }
+    .menu-box h1 { font-size: 26px; letter-spacing: 2px; }
+    .subtitle { font-size: 13px; margin-bottom: 20px; }
+
+    .team-btn { padding: 12px 22px; font-size: 18px; }
+    #start-btn { padding: 12px 36px; font-size: 18px; letter-spacing: 1px; }
+
+    .controls-info { display: none; } /* скрываем на мобильном */
+
+    /* FPS и игроки */
+    #fps-counter { font-size: 12px; top: 10px; left: 10px; }
+    #players-count { font-size: 12px; top: 10px; right: 10px; padding: 6px 12px; }
+
+    /* HP бар */
+    #health-bar { width: 130px; height: 20px; bottom: 200px; left: 15px; }
+    #health-text { font-size: 11px; }
+
+    /* Прицел */
+    #crosshair { font-size: 22px; }
+
+    /* Лидерборд */
+    .leaderboard-inner { min-width: unset; width: 95vw; padding: 16px 12px; }
+    .leaderboard-inner h2 { font-size: 16px; }
+    .leaderboard-inner th,
+    .leaderboard-inner td { padding: 6px 8px; font-size: 12px; }
+
+    /* Kill feed */
+    #kill-feed { top: 45px; right: 10px; }
+    .kill-entry { font-size: 11px; padding: 4px 8px; }
+
+    /* Джойстик крупнее на маленьком экране */
+    #joystick-zone { width: 140px; height: 140px; bottom: 20px; left: 10px; }
+    #joystick-base { width: 115px; height: 115px; }
+    #joystick-stick { width: 46px; height: 46px; }
+
+    /* Кнопки действий */
+    #action-buttons { bottom: 40px; right: 10px; gap: 10px; }
+    .action-btn { width: 64px; height: 64px; font-size: 22px; }
+
+    /* Кнопки оружия */
+    #weapon-switch-btns { bottom: 185px; right: 10px; gap: 6px; }
+    .weapon-switch-btn { width: 44px; height: 44px; font-size: 18px; }
+}
+
+@media (max-width: 380px) {
+    .menu-box h1 { font-size: 20px; }
+    .action-btn { width: 56px; height: 56px; font-size: 20px; }
+    #joystick-base { width: 100px; height: 100px; }
+}
+
+/* Запрет выделения и zoom на мобильном */
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+}
+
+/* Разрешаем скролл только в меню */
+#start-screen { touch-action: auto; }
+
+/* ============================================================
+   МОБИЛЬНАЯ ОПТИМИЗАЦИЯ — перекомпоновка всего UI
+   ============================================================ */
+@media (pointer: coarse), (max-width: 768px) {
+
+    /* Меню — компактнее */
+    .menu-box {
+        padding: 28px 24px;
+        width: 92vw;
+        max-width: 420px;
+    }
+    .menu-box h1 {
+        font-size: 26px;
+        letter-spacing: 2px;
+        margin-bottom: 6px;
+    }
+    .subtitle { font-size: 13px; margin-bottom: 22px; }
+
+    .team-btn { padding: 12px 22px; font-size: 18px; }
+    #start-btn { padding: 12px 40px; font-size: 18px; }
+
+    .controls-info { display: none; } /* убираем — всё управление тач */
+
+    /* FPS — меньше и прозрачнее */
+    #fps-counter {
+        font-size: 12px;
+        top: 8px; left: 8px;
+        opacity: 0.6;
+    }
+
+    /* Счётчик игроков */
+    #players-count {
+        top: 8px; right: 8px;
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    /* HP-бар — внизу по центру, широкий */
+    #health-bar {
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 160px;
+        height: 20px;
+    }
+    #health-text { font-size: 12px; }
+
+    /* Прицел — крупнее для тач */
+    #crosshair {
+        font-size: 36px;
+        opacity: 0.7;
+    }
+
+    /* Kill-feed — меньше текст */
+    .kill-entry { font-size: 11px; padding: 4px 8px; }
+    #kill-feed { top: 36px; right: 8px; }
+
+    /* Лидерборд — на весь экран */
+    .leaderboard-inner {
+        min-width: unset;
+        width: 95vw;
+        padding: 16px 12px;
+    }
+    .leaderboard-inner h2 { font-size: 16px; margin-bottom: 10px; }
+    .leaderboard-inner th,
+    .leaderboard-inner td { padding: 6px 8px; font-size: 12px; }
+}
+
+/* ============ ДЖОЙСТИК — визуальные улучшения для мобильного ============ */
+@media (pointer: coarse) {
+
+    /* Джойстик крупнее на большом телефоне */
+    #joystick-base {
+        width: 140px;
+        height: 140px;
+    }
+    #joystick-stick {
+        width: 58px;
+        height: 58px;
+    }
+
+    /* Кнопки стрельбы/прыжка крупнее */
+    .action-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 30px;
+    }
+
+    /* Weapon switch — горизонтально сверху над кнопками */
+    #weapon-switch-btns {
+        flex-direction: row;
+        bottom: auto;
+        top: auto;
+        right: 20px;
+        bottom: 250px;
+    }
+
+    /* Скрываем FPS на мобильном чтобы не мешал */
+    #fps-counter { display: none; }
+}
+
+/* Ландшафтная ориентация — перестраиваем джойстик */
+@media (pointer: coarse) and (orientation: landscape) {
+    #joystick-zone {
+        bottom: 16px;
+        left: 16px;
+        width: 140px;
+        height: 140px;
+    }
+    #action-buttons {
+        bottom: 20px;
+        right: 16px;
+        flex-direction: row;
+        gap: 10px;
+    }
+    .action-btn { width: 65px; height: 65px; font-size: 24px; }
+    #weapon-switch-btns {
+        flex-direction: column;
+        bottom: 100px;
+        right: 16px;
+    }
+    #health-bar {
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 130px;
+        height: 18px;
+    }
+}

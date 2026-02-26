@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>CS:GO 10000000.16</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Контейнер для игры -->
+    <div id="game-container"></div>
+
+    <!-- UI: Меню начала игры -->
+    <div id="start-screen">
+        <div class="menu-box">
+            <h1>CS:GO 10000000.16</h1>
+            <p class="subtitle">Browser 3D FPS</p>
+            
+            <!-- Выбор команды -->
+            <div class="team-select">
+                <p class="team-label">ВЫБЕРИ КОМАНДУ:</p>
+                <div class="team-buttons">
+                    <button id="btn-ct" class="team-btn ct">CT</button>
+                    <button id="btn-t" class="team-btn t">T</button>
+                </div>
+            </div>
+            
+            <button id="start-btn" disabled>ИГРАТЬ</button>
+            <div class="controls-info">
+                <p><strong>Управление:</strong></p>
+                <p>W A S D - движение</p>
+                <p>ПРОБЕЛ - прыжок</p>
+                <p>МЫШЬ - поворот камеры</p>
+                <p>ЛЕВАЯ КНОПКА МЫШИ - стрельба / удар</p>
+                <p>1 - Пистолет &nbsp; 2 - Нож &nbsp; 3 - AK-47</p>
+                <p>TAB - лидерборд</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI: Отображение FPS -->
+    <div id="fps-counter">FPS: 0</div>
+
+    <!-- UI: Количество игроков -->
+    <div id="players-count">Игроков: 0</div>
+    
+    <!-- UI: HP -->
+    <div id="health-bar">
+        <div id="health-fill"></div>
+        <span id="health-text">100</span>
+    </div>
+
+    <!-- UI: Прицел -->
+    <div id="crosshair">+</div>
+
+    <!-- UI: Оружие -->
+    <div id="weapon-hud">
+        <div class="weapon-slot" id="slot-1" title="1 - Пистолет">
+            <div class="weapon-icon">🔫</div>
+            <div class="weapon-name">Пистолет</div>
+            <div class="weapon-key">1</div>
+        </div>
+        <div class="weapon-slot" id="slot-2" title="2 - Нож">
+            <div class="weapon-icon">🔪</div>
+            <div class="weapon-name">Нож</div>
+            <div class="weapon-key">2</div>
+        </div>
+        <div class="weapon-slot" id="slot-3" title="3 - AK-47">
+            <div class="weapon-icon">⚔️</div>
+            <div class="weapon-name">AK-47</div>
+            <div class="weapon-key">3</div>
+        </div>
+    </div>
+
+    <!-- UI: Лидерборд (Tab) -->
+    <div id="leaderboard" class="hidden">
+        <div class="leaderboard-inner">
+            <h2>🏆 ЛИДЕРБОРД</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Игрок</th>
+                        <th>Убийств</th>
+                        <th>Смертей</th>
+                        <th>K/D</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- UI: Лента убийств -->
+    <div id="kill-feed"></div>
+
+    <!-- МОБИЛЬНОЕ УПРАВЛЕНИЕ -->
+    <div id="mobile-controls">
+        <!-- Левый джойстик — движение -->
+        <div id="joystick-zone">
+            <div id="joystick-base">
+                <div id="joystick-stick"></div>
+            </div>
+        </div>
+
+        <!-- Правая зона — поворот камеры (свайп) -->
+        <div id="look-zone"></div>
+
+        <!-- Кнопки действий -->
+        <div id="action-buttons">
+            <button id="btn-shoot" class="action-btn shoot-btn">🔫</button>
+            <button id="btn-jump"  class="action-btn jump-btn">⬆</button>
+        </div>
+
+        <!-- Кнопки смены оружия -->
+        <div id="weapon-switch-btns">
+            <button class="weapon-switch-btn" data-weapon="pistol">🔫</button>
+            <button class="weapon-switch-btn" data-weapon="knife">🔪</button>
+            <button class="weapon-switch-btn" data-weapon="ak47">⚔️</button>
+        </div>
+    </div>
+
+    <!-- Подключение библиотек -->
+    <!-- Three.js - 3D графика -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GLTFLoader для загрузки .glb моделей -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- FBXLoader для модели игрока -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FBXLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/fflate.min.js"></script>
+    <!-- Socket.io - для мультиплеера -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Основной скрипт игры -->
+    <script src="main.js"></script>
+</body>
+</html>
