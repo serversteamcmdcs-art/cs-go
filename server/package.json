@@ -1,0 +1,22 @@
+{
+  "name": "csgo-10000000-16-server",
+  "version": "1.0.0",
+  "description": "Backend server for CS:GO 10000000.16 - Multiplayer FPS Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "godot",
+    "multiplayer",
+    "fps",
+    "socket.io"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  }
+}
